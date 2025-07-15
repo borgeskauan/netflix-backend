@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+external:
+  tmdb-api:
+    url: ${TMDB_API_URL}
+    api-key: ${TMDB_API_KEY}
+
+server:
+  servlet:
+    context-path: /netflix
+  port: ${SERVER_PORT:8080}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "!test"
+    import: optional:file:.env.properties
