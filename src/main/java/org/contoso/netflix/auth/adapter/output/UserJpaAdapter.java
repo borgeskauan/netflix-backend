@@ -18,8 +18,10 @@ public class UserJpaAdapter implements UserRepositoryPort {
 
     @Override
     public NetflixUser save(NetflixUser netflixUser) {
-        NetflixUserDatabase userEntity = mapToUserEntity(netflixUser)
-                .withId(UUID.randomUUID().toString());
+        NetflixUserDatabase userEntity = mapToUserEntity(netflixUser);
+        if (userEntity.getId() == null || userEntity.getId().isEmpty()) {
+            userEntity.setId(UUID.randomUUID().toString());
+        }
 
         NetflixUserDatabase savedEntity = userJpaClient.save(userEntity);
         return mapToNetflixUser(savedEntity);
@@ -36,14 +38,18 @@ public class UserJpaAdapter implements UserRepositoryPort {
                 .id(UUID.fromString(userEntity.getId()))
                 .email(userEntity.getEmail())
                 .passwordHash(userEntity.getPasswordHash())
+                .isGuest(userEntity.getIsGuest())
                 .build();
     }
 
     private NetflixUserDatabase mapToUserEntity(NetflixUser netflixUser) {
+        var id = netflixUser.getId() != null ? netflixUser.getId().toString() : null;
+
         return NetflixUserDatabase.builder()
-                .id(String.valueOf(netflixUser.getId()))
+                .id(id)
                 .email(netflixUser.getEmail())
                 .passwordHash(netflixUser.getPasswordHash())
+                .isGuest(netflixUser.getIsGuest())
                 .build();
     }
 }

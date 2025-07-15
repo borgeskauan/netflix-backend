@@ -11,4 +11,6 @@ public class NetflixUser {
     private UUID id;
     private String email;
     private String passwordHash;
+
+    private Boolean isGuest;
 }

@@ -4,10 +4,7 @@ import org.contoso.netflix.auth.domain.dto.RegisterRequest;
 import org.contoso.netflix.auth.domain.dto.LoginRequest;
 import org.contoso.netflix.auth.domain.dto.UserResponse;
 import org.contoso.netflix.auth.port.input.AuthUseCase;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,5 +24,10 @@ public class AuthController {
     @PostMapping("/register")
     public UserResponse register(@RequestBody RegisterRequest request) {
         return authUseCase.register(request);
+    }
+
+    @GetMapping("/guest")
+    public UserResponse createGuestUser() {
+        return authUseCase.createGuestUser();
     }
 }

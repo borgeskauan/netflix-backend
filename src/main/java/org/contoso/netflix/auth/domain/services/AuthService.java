@@ -27,13 +27,34 @@ public class AuthService implements AuthUseCase {
         String passwordHash = PasswordUtil.hashPassword(registerRequest.getPassword());
 
         NetflixUser netflixUser = NetflixUser.builder()
+                .id(registerRequest.getGuestId())
                 .email(registerRequest.getEmail())
                 .passwordHash(passwordHash)
+                .isGuest(false)
                 .build();
 
-        var savedUser = userRepositoryPort.save(netflixUser);
+        return saveNetflixUser(netflixUser);
+    }
 
-        return mapToUserResponse(savedUser);
+    @Override
+    public UserResponse login(LoginRequest loginRequest) {
+        NetflixUser user = userRepositoryPort.findByEmail(loginRequest.getEmail())
+                .orElseThrow(NetflixAuthenticationException::new);
+
+        if (!PasswordUtil.verifyPassword(loginRequest.getPassword(), user.getPasswordHash())) {
+            throw new NetflixAuthenticationException();
+        }
+
+        return mapToUserResponse(user);
+    }
+
+    @Override
+    public UserResponse createGuestUser() {
+        NetflixUser netflixUser = NetflixUser.builder()
+                .isGuest(false)
+                .build();
+
+        return saveNetflixUser(netflixUser);
     }
 
     private void validateRegisterRequest(RegisterRequest registerRequest) {
@@ -50,22 +71,17 @@ public class AuthService implements AuthUseCase {
         }
     }
 
-    @Override
-    public UserResponse login(LoginRequest loginRequest) {
-        NetflixUser user = userRepositoryPort.findByEmail(loginRequest.getEmail())
-                .orElseThrow(NetflixAuthenticationException::new);
+    private UserResponse saveNetflixUser(NetflixUser netflixUser) {
+        var savedUser = userRepositoryPort.save(netflixUser);
 
-        if (!PasswordUtil.verifyPassword(loginRequest.getPassword(), user.getPasswordHash())) {
-            throw new NetflixAuthenticationException();
-        }
-
-        return mapToUserResponse(user);
+        return mapToUserResponse(savedUser);
     }
 
     private static UserResponse mapToUserResponse(NetflixUser user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
+                .isGuest(user.getIsGuest())
                 .build();
     }
 }

@@ -8,4 +8,6 @@ public interface AuthUseCase {
     UserResponse register(RegisterRequest registerRequest);
 
     UserResponse login(LoginRequest loginRequest);
+
+    UserResponse createGuestUser();
 }
