@@ -9,6 +9,8 @@ import java.util.UUID;
 @Builder
 public class NetflixUser {
     private UUID id;
+
+    private String name;
     private String email;
     private String passwordHash;
 

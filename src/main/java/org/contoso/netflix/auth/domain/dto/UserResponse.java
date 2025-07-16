@@ -9,6 +9,8 @@ import java.util.UUID;
 @Builder
 public class UserResponse {
     private UUID id;
+
+    private String name;
     private String email;
 
     private Boolean isGuest;

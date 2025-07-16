@@ -28,6 +28,7 @@ public class AuthService implements AuthUseCase {
 
         NetflixUser netflixUser = NetflixUser.builder()
                 .id(registerRequest.getGuestId())
+                .name(registerRequest.getName())
                 .email(registerRequest.getEmail())
                 .passwordHash(passwordHash)
                 .isGuest(false)
@@ -80,6 +81,7 @@ public class AuthService implements AuthUseCase {
     private static UserResponse mapToUserResponse(NetflixUser user) {
         return UserResponse.builder()
                 .id(user.getId())
+                .name(user.getName())
                 .email(user.getEmail())
                 .isGuest(user.getIsGuest())
                 .build();

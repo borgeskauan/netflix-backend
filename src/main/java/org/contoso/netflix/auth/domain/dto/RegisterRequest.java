@@ -12,6 +12,8 @@ public class RegisterRequest {
 
     private UUID guestId;
 
+    private String name;
+
     @NotEmpty
     private String email;
 

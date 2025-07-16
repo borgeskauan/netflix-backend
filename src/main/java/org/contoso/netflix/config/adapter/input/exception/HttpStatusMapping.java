@@ -1,4 +1,4 @@
-package org.contoso.netflix.config.exception;
+package org.contoso.netflix.config.adapter.input.exception;
 
 import org.springframework.http.HttpStatus;
 

@@ -1,4 +1,4 @@
-package org.contoso.netflix.config.exception;
+package org.contoso.netflix.config.adapter.input.exception;
 
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;

@@ -36,6 +36,7 @@ public class UserJpaAdapter implements UserRepositoryPort {
     private NetflixUser mapToNetflixUser(NetflixUserDatabase userEntity) {
         return NetflixUser.builder()
                 .id(UUID.fromString(userEntity.getId()))
+                .name(userEntity.getName())
                 .email(userEntity.getEmail())
                 .passwordHash(userEntity.getPasswordHash())
                 .isGuest(userEntity.getIsGuest())
@@ -47,6 +48,7 @@ public class UserJpaAdapter implements UserRepositoryPort {
 
         return NetflixUserDatabase.builder()
                 .id(id)
+                .name(netflixUser.getName())
                 .email(netflixUser.getEmail())
                 .passwordHash(netflixUser.getPasswordHash())
                 .isGuest(netflixUser.getIsGuest())
