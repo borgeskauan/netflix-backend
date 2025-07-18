@@ -2,9 +2,13 @@ package org.contoso.netflix.config.adapter.input.exception;
 
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -45,6 +49,15 @@ public class BusinessExceptionHandler {
         return buildResponseEntity(apiError, ex);
     }
 
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiError> handleMissingParams(MissingServletRequestParameterException ex) {
+        var apiError = ApiError.fromHttpStatus(BAD_REQUEST)
+                .withFriendlyMessage("O parâmetro '" + ex.getParameterName() + "' é obrigatório.")
+                .withTechnicalMessage(ex.getMessage());
+
+        return buildResponseEntity(apiError, ex);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGenericException(Exception ex) {
         var apiError = ApiError.fromHttpStatus(INTERNAL_SERVER_ERROR)
@@ -56,16 +69,16 @@ public class BusinessExceptionHandler {
 
     @ExceptionHandler(FeignException.Forbidden.class)
     public ResponseEntity<ApiError> handleAuthenticationError(FeignException.Forbidden ex) {
-        return buildResponseEntityForAuthenticationError(ex);
+        return buildResponseEntityForAuthenticationError(FORBIDDEN, ex);
     }
 
     @ExceptionHandler(FeignException.Unauthorized.class)
     public ResponseEntity<ApiError> handleAuthenticationError(FeignException.Unauthorized ex) {
-        return buildResponseEntityForAuthenticationError(ex);
+        return buildResponseEntityForAuthenticationError(UNAUTHORIZED, ex);
     }
 
-    private ResponseEntity<ApiError> buildResponseEntityForAuthenticationError(FeignException ex) {
-        var apiError = ApiError.fromHttpStatus(FORBIDDEN)
+    private ResponseEntity<ApiError> buildResponseEntityForAuthenticationError(HttpStatus httpStatus, FeignException ex) {
+        var apiError = ApiError.fromHttpStatus(httpStatus)
                 .withFriendlyMessage("Um erro de autenticação aconteceu. Por favor, verifique suas credenciais e tente novamente.")
                 .withTechnicalMessage(ex.getLocalizedMessage());
 

@@ -1,11 +1,13 @@
 package org.contoso.netflix.movies.adapter.output.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class TmdbMovieDetails {
+public class TmdbMovieDetails  extends TmdbMovieListing {
     private int runtime;
     private String originalLanguage;
     private String tagline;

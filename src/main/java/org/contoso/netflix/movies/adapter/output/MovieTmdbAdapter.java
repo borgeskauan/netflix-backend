@@ -1,38 +1,90 @@
 package org.contoso.netflix.movies.adapter.output;
 
+import org.contoso.netflix.movies.adapter.output.dto.TmdbMovieDetails;
+import org.contoso.netflix.movies.adapter.output.dto.TmdbMovieListing;
+import org.contoso.netflix.movies.adapter.output.dto.TmdbMovieMapper;
 import org.contoso.netflix.movies.domain.dto.MovieResponse;
+import org.contoso.netflix.movies.domain.dto.PageableResponse;
+import org.contoso.netflix.movies.domain.entity.MovieDetails;
+import org.contoso.netflix.movies.domain.entity.MovieListing;
 import org.contoso.netflix.movies.port.output.MovieRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @Repository
 public class MovieTmdbAdapter implements MovieRepository {
 
     private final TmdbRestClient tmdbRestClient;
+    private final TmdbMovieMapper tmdbMovieMapper;
 
-    public MovieTmdbAdapter(TmdbRestClient tmdbRestClient) {
+    public MovieTmdbAdapter(TmdbRestClient tmdbRestClient, TmdbMovieMapper tmdbMovieMapper) {
         this.tmdbRestClient = tmdbRestClient;
+        this.tmdbMovieMapper = tmdbMovieMapper;
     }
 
     @Override
-    public List<MovieResponse> findPopularMovies(Pageable pageable) {
-        return List.of();
+    public PageableResponse<MovieResponse> findPopularMovies(Pageable pageable) {
+        return fetchAndMapMovies(() -> tmdbRestClient.getPopularMovies(getPageNumber(pageable)));
     }
 
     @Override
-    public List<MovieResponse> searchMovies(String query, Pageable pageable) {
-        return List.of();
+    public PageableResponse<MovieResponse> searchMovies(String query, Pageable pageable) {
+        return fetchAndMapMovies(() -> tmdbRestClient.searchMovies(query, getPageNumber(pageable)));
     }
 
     @Override
     public MovieResponse findMovieDetails(String movieId) {
-        return null;
+        TmdbMovieDetails tmdbMovieDetails = tmdbRestClient.getMovieDetails(movieId);
+        return mapDetailsToMovieResponse(tmdbMovieDetails);
     }
 
     @Override
-    public List<MovieResponse> findSimilarMovies(String movieId, Pageable pageable) {
-        return List.of();
+    public PageableResponse<MovieResponse> findSimilarMovies(String movieId, Pageable pageable) {
+        return fetchAndMapMovies(() -> tmdbRestClient.getSimilarMovies(movieId, getPageNumber(pageable)));
+    }
+
+    private int getPageNumber(Pageable pageable) {
+        return pageable.getPageNumber() + 1; // TMDB API uses 1-based indexing
+    }
+
+    private PageableResponse<MovieResponse> fetchAndMapMovies(Supplier<PageableResponse<TmdbMovieListing>> fetcher) {
+        PageableResponse<TmdbMovieListing> tmdbMovies = fetcher.get();
+        List<MovieResponse> movieResponses = tmdbMovies.getResults().stream()
+                .map((this::toMovieListing))
+                .map(movieListing -> MovieResponse.builder()
+                        .movieListing(movieListing)
+                        .build())
+                .toList();
+
+        return tmdbMovies.mapResults(movieResponses);
+    }
+
+    private MovieResponse mapDetailsToMovieResponse(TmdbMovieDetails tmdbMovieDetails) {
+        String completePosterPath = buildCompletePosterPath("original", tmdbMovieDetails.getPosterPath());
+
+        MovieListing movieListing = tmdbMovieMapper.toMovieListing(tmdbMovieDetails).withPosterPath(completePosterPath);
+        MovieDetails movieDetails = tmdbMovieMapper.toMovieDetails(tmdbMovieDetails);
+        return MovieResponse.builder()
+                .movieListing(movieListing)
+                .movieDetails(movieDetails)
+                .build();
+    }
+
+    private MovieListing toMovieListing(TmdbMovieListing tmdbMovieListing) {
+        var movieListing = tmdbMovieMapper.toMovieListing(tmdbMovieListing);
+
+        String completePosterPath = buildCompletePosterPath("w500", tmdbMovieListing.getPosterPath());
+        return movieListing.withPosterPath(completePosterPath);
+    }
+
+    private static String buildCompletePosterPath(String resolution, String partialPosterPath) {
+        if (partialPosterPath == null || partialPosterPath.isEmpty()) {
+            return null;
+        }
+
+        return "https://image.tmdb.org/t/p/" + resolution + partialPosterPath;
     }
 }
