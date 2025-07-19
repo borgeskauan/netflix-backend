@@ -6,7 +6,13 @@ import lombok.Data;
 @Data
 @Builder
 public class UserMovieMetadata {
-    private Boolean isWatched;
-    private Boolean isFavorite;
-    private Boolean isWatchLater;
+
+    @Builder.Default
+    private Boolean isWatched = false;
+
+    @Builder.Default
+    private Boolean isFavorite = false;
+
+    @Builder.Default
+    private Boolean isWatchLater = false;
 }

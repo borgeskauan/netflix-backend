@@ -52,7 +52,8 @@ public class AuthService implements AuthUseCase {
     @Override
     public UserResponse createGuestUser() {
         NetflixUser netflixUser = NetflixUser.builder()
-                .isGuest(false)
+                .name("Guest User")
+                .isGuest(true)
                 .build();
 
         return saveNetflixUser(netflixUser);

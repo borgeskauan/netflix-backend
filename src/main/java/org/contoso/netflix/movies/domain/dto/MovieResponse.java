@@ -11,5 +11,7 @@ import org.contoso.netflix.movies.domain.entity.UserMovieMetadata;
 public class MovieResponse {
     private MovieListing movieListing;
     private MovieDetails movieDetails;
-    private UserMovieMetadata userMovieMetadata;
+
+    @Builder.Default
+    private UserMovieMetadata userMovieMetadata = UserMovieMetadata.builder().build();
 }
