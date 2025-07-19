@@ -4,8 +4,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-  jackson:
-    property-naming-strategy: SNAKE_CASE
 
 external:
   tmdb-api:
