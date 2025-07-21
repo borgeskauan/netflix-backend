@@ -9,18 +9,23 @@ import org.contoso.netflix.auth.domain.dto.UserResponse;
 import org.contoso.netflix.auth.domain.entity.NetflixUser;
 import org.contoso.netflix.auth.domain.exception.NetflixAuthenticationException;
 import org.contoso.netflix.auth.port.input.AuthUseCase;
+import org.contoso.netflix.playlist.ports.input.PlaylistUseCase;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService implements AuthUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
+    private final PlaylistUseCase playlistUseCase;
 
-    public AuthService(UserRepositoryPort userRepositoryPort) {
+    public AuthService(UserRepositoryPort userRepositoryPort, PlaylistUseCase playlistUseCase) {
         this.userRepositoryPort = userRepositoryPort;
+        this.playlistUseCase = playlistUseCase;
     }
 
     @Override
+    @Transactional
     public UserResponse register(RegisterRequest registerRequest) {
         validateRegisterRequest(registerRequest);
 
@@ -50,6 +55,7 @@ public class AuthService implements AuthUseCase {
     }
 
     @Override
+    @Transactional
     public UserResponse createGuestUser() {
         NetflixUser netflixUser = NetflixUser.builder()
                 .name("Guest User")
@@ -76,7 +82,16 @@ public class AuthService implements AuthUseCase {
     private UserResponse saveNetflixUser(NetflixUser netflixUser) {
         var savedUser = userRepositoryPort.save(netflixUser);
 
+        boolean isNewUser = netflixUser.getId() == null || netflixUser.getId().toString().isEmpty();
+        postProcessCreatedUser(savedUser, isNewUser);
+
         return mapToUserResponse(savedUser);
+    }
+
+    private void postProcessCreatedUser(NetflixUser savedUser, boolean isNewUser) {
+        if (isNewUser) {
+            playlistUseCase.createSystemPlaylistsForUser(savedUser.getId().toString());
+        }
     }
 
     private static UserResponse mapToUserResponse(NetflixUser user) {

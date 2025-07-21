@@ -11,6 +11,7 @@ import java.util.UUID;
 public class UserJpaAdapter implements UserRepositoryPort {
 
     private final UserJpaClient userJpaClient;
+    // TODO: Usar mapper com o MapStruct para converter entre entidades e DTOs, já que possuem nomes similares.
 
     public UserJpaAdapter(UserJpaClient userJpaClient) {
         this.userJpaClient = userJpaClient;
