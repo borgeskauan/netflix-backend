@@ -1,6 +1,6 @@
 package org.contoso.netflix.auth.domain.services;
 
-import org.contoso.netflix.auth.domain.exception.NetflixRegistrationException;
+import org.contoso.netflix.auth.domain.exception.InvalidRegistrationRequestException;
 import org.contoso.netflix.auth.port.input.UserRepositoryPort;
 import org.contoso.netflix.auth.domain.PasswordUtil;
 import org.contoso.netflix.auth.domain.dto.LoginRequest;
@@ -67,15 +67,15 @@ public class AuthService implements AuthUseCase {
 
     private void validateRegisterRequest(RegisterRequest registerRequest) {
         if (userRepositoryPort.findByEmail(registerRequest.getEmail()).isPresent()) {
-            throw new NetflixRegistrationException("User already exists with this email");
+            throw new InvalidRegistrationRequestException("User already exists with this email");
         }
 
         if (registerRequest.getEmail() == null || registerRequest.getEmail().isEmpty()) {
-            throw new NetflixRegistrationException("Email cannot be empty");
+            throw new InvalidRegistrationRequestException("Email cannot be empty");
         }
 
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
-            throw new NetflixRegistrationException("Passwords do not match");
+            throw new InvalidRegistrationRequestException("Passwords do not match");
         }
     }
 

@@ -1,12 +1,12 @@
-package org.contoso.netflix.auth.domain.exception;
+package org.contoso.netflix.playlist.domain.exception;
 
 import org.contoso.netflix.config.adapter.input.exception.BusinessException;
 import org.contoso.netflix.config.adapter.input.exception.HttpStatusMapping;
 import org.springframework.http.HttpStatus;
 
-@HttpStatusMapping(HttpStatus.BAD_REQUEST)
-public class NetflixRegistrationException extends BusinessException {
-    public NetflixRegistrationException(String friendlyMessage) {
+@HttpStatusMapping(HttpStatus.NOT_FOUND)
+public class PlaylistNotFoundException extends BusinessException {
+    public PlaylistNotFoundException(String friendlyMessage) {
         super(friendlyMessage);
     }
 }

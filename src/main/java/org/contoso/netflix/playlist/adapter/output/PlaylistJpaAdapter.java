@@ -1,6 +1,7 @@
 package org.contoso.netflix.playlist.adapter.output;
 
 import org.contoso.netflix.playlist.domain.entity.Playlist;
+import org.contoso.netflix.playlist.domain.exception.InvalidPlaylistRequestException;
 import org.contoso.netflix.playlist.ports.output.PlaylistRepository;
 import org.springframework.stereotype.Repository;
 
@@ -44,7 +45,7 @@ public class PlaylistJpaAdapter implements PlaylistRepository {
     @Override
     public Playlist removeMovieFromPlaylist(String userId, String playlistId, String movieId) {
         PlaylistDatabase playlist = playlistJpaClient.findByIdAndUserId(UUID.fromString(playlistId), userId)
-                .orElseThrow(() -> new IllegalArgumentException("Playlist not found for user: " + userId + " and playlistId: " + playlistId));
+                .orElseThrow(() -> new InvalidPlaylistRequestException("Playlist not found for user: " + userId + " and playlistId: " + playlistId));
 
         playlist.getMovieIds().removeIf(movie -> movie.getId().equals(movieId));
         return playlistMapper.toResponse(playlistJpaClient.save(playlist));
@@ -53,7 +54,7 @@ public class PlaylistJpaAdapter implements PlaylistRepository {
     @Override
     public Playlist addMovieToPlaylist(String userId, String playlistId, String movieId) {
         PlaylistDatabase playlist = playlistJpaClient.findByIdAndUserId(UUID.fromString(playlistId), userId)
-                .orElseThrow(() -> new IllegalArgumentException("Playlist not found for user: " + userId + " and playlistId: " + playlistId));
+                .orElseThrow(() -> new InvalidPlaylistRequestException("Playlist not found for user: " + userId + " and playlistId: " + playlistId));
 
         PlaylistMovieDatabase movie = new PlaylistMovieDatabase(movieId);
         if (playlist.getMovieIds().contains(movie)) {
