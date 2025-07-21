@@ -30,7 +30,7 @@ public class PlaylistJpaAdapter implements PlaylistRepository {
     }
 
     @Override
-    public Optional<Playlist> findPlaylistsByIdAndUserId(String playlistId, String userId) {
+    public Optional<Playlist> findPlaylistsByUserIdAndId(String userId, String playlistId) {
         return playlistJpaClient.findByIdAndUserId(UUID.fromString(playlistId), userId)
                 .map(playlistMapper::toResponse);
     }
@@ -38,6 +38,13 @@ public class PlaylistJpaAdapter implements PlaylistRepository {
     @Override
     public List<Playlist> findPlaylistsByMovieId(String userId, String movieId) {
         return playlistJpaClient.findAllByUserIdAndMovieIdsContaining(userId, List.of(new PlaylistMovieDatabase(movieId))).stream()
+                .map(playlistMapper::toResponse)
+                .toList();
+    }
+
+    @Override
+    public List<Playlist> findSystemPlaylistsByUserId(String userId) {
+        return playlistJpaClient.findAllByUserIdAndSystemPlaylistIdNotNull(userId).stream()
                 .map(playlistMapper::toResponse)
                 .toList();
     }

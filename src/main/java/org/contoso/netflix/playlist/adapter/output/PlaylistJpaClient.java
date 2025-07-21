@@ -12,4 +12,6 @@ public interface PlaylistJpaClient extends JpaRepository<PlaylistDatabase, Strin
     Optional<PlaylistDatabase> findByIdAndUserId(UUID id, String userId);
 
     List<PlaylistDatabase> findAllByUserIdAndMovieIdsContaining(String userId, List<PlaylistMovieDatabase> movieIds);
+
+    List<PlaylistDatabase> findAllByUserIdAndSystemPlaylistIdNotNull(String userId);
 }

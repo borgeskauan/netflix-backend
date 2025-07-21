@@ -5,6 +5,7 @@ import org.contoso.netflix.movies.port.input.MovieUseCase;
 import org.contoso.netflix.playlist.adapter.input.PlaylistRequest;
 import org.contoso.netflix.playlist.domain.dto.MoviePlaylistUpdateRequest;
 import org.contoso.netflix.playlist.domain.entity.Playlist;
+import org.contoso.netflix.playlist.domain.entity.SystemPlaylist;
 import org.contoso.netflix.playlist.domain.exception.InvalidPlaylistRequestException;
 import org.contoso.netflix.playlist.domain.exception.PlaylistNotFoundException;
 import org.contoso.netflix.playlist.ports.input.PlaylistUseCase;
@@ -12,6 +13,8 @@ import org.contoso.netflix.playlist.ports.output.PlaylistRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,7 +35,7 @@ public class PlaylistService implements PlaylistUseCase {
 
     @Override
     public Playlist getPlaylistsById(String userId, String playlistId) {
-        return playlistRepository.findPlaylistsByIdAndUserId(playlistId, userId)
+        return playlistRepository.findPlaylistsByUserIdAndId(userId, playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException("Playlist not found for user: " + userId + " and playlistId: " + playlistId));
     }
 
@@ -43,12 +46,22 @@ public class PlaylistService implements PlaylistUseCase {
 
     @Override
     public void updateMovieInPlaylists(String userId, String movieId, MoviePlaylistUpdateRequest request) {
+        Map<String, String> systemPlaylistsMap = buildSystemPlaylistsMap(userId);
+
         for (String playlistId : request.getPlaylistsToAdd()) {
+            if (systemPlaylistsMap.containsKey(playlistId)) {
+                playlistId = systemPlaylistsMap.get(playlistId);
+            }
+
             var playlist = playlistRepository.addMovieToPlaylist(userId, playlistId, movieId);
             updatePlaylistCover(playlist);
         }
 
         for (String playlistId : request.getPlaylistsToRemove()) {
+            if (systemPlaylistsMap.containsKey(playlistId)) {
+                playlistId = systemPlaylistsMap.get(playlistId);
+            }
+
             var playlist = playlistRepository.removeMovieFromPlaylist(userId, playlistId, movieId);
             updatePlaylistCover(playlist);
         }
@@ -91,6 +104,16 @@ public class PlaylistService implements PlaylistUseCase {
         }
     }
 
+    private Map<String, String> buildSystemPlaylistsMap(String userId) {
+        var systemPlaylists = playlistRepository.findSystemPlaylistsByUserId(userId);
+
+        return systemPlaylists.stream()
+                .collect(Collectors.toMap(
+                        Playlist::getSystemPlaylistId,
+                        playlist -> playlist.getId().toString()
+                ));
+    }
+
     private void updatePlaylistCover(Playlist playlist) {
         if (playlist.getMovieIds().isEmpty()) {
             playlist.setCoverImageUrl(null);
@@ -121,17 +144,17 @@ public class PlaylistService implements PlaylistUseCase {
                 Playlist.builder()
                         .name("Favorites")
                         .description("Your favorite movies")
-                        .systemPlaylistId("favorites")
+                        .systemPlaylistId(SystemPlaylist.FAVORITES.getId())
                         .build(),
                 Playlist.builder()
                         .name("Watch Later")
                         .description("Movies you want to watch later")
-                        .systemPlaylistId("watch_later")
+                        .systemPlaylistId(SystemPlaylist.WATCH_LATER.getId())
                         .build(),
                 Playlist.builder()
                         .name("Watched")
                         .description("Movies you have watched")
-                        .systemPlaylistId("watched")
+                        .systemPlaylistId(SystemPlaylist.WATCHED.getId())
                         .build()
         );
     }

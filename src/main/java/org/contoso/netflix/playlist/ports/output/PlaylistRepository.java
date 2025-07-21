@@ -8,9 +8,11 @@ import java.util.Optional;
 public interface PlaylistRepository {
     List<Playlist> findPlaylistsByUserId(String userId);
 
-    Optional<Playlist> findPlaylistsByIdAndUserId(String playlistId, String userId);
+    Optional<Playlist> findPlaylistsByUserIdAndId(String userId, String playlistId);
 
     List<Playlist> findPlaylistsByMovieId(String userId, String movieId);
+
+    List<Playlist> findSystemPlaylistsByUserId(String userId);
 
     Playlist removeMovieFromPlaylist(String userId, String playlistId, String movieId);
 

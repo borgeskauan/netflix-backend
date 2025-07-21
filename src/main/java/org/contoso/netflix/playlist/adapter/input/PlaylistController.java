@@ -23,7 +23,7 @@ public class PlaylistController {
     }
 
     @GetMapping("/{playlistId}")
-    public Playlist getPlaylistById(@PathVariable("userId") String userId, @PathVariable String playlistId) {
+    public Playlist getPlaylistById(@PathVariable("userId") String userId, @PathVariable("playlistId") String playlistId) {
         return playlistUseCase.getPlaylistsById(userId, playlistId);
     }
 
