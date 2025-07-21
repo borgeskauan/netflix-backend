@@ -3,6 +3,7 @@ package org.contoso.netflix.movies.adapter.output;
 import org.contoso.netflix.movies.adapter.output.dto.TmdbMovieDetails;
 import org.contoso.netflix.movies.adapter.output.dto.TmdbMovieListing;
 import org.contoso.netflix.movies.adapter.output.dto.TmdbMovieMapper;
+import org.contoso.netflix.movies.adapter.output.dto.TmdbPageableResponse;
 import org.contoso.netflix.movies.domain.dto.MovieResponse;
 import org.contoso.netflix.movies.domain.dto.PageableResponse;
 import org.contoso.netflix.movies.domain.entity.MovieDetails;
@@ -50,8 +51,8 @@ public class MovieTmdbAdapter implements MovieRepository {
         return pageable.getPageNumber() + 1; // TMDB API uses 1-based indexing
     }
 
-    private PageableResponse<MovieResponse> fetchAndMapMovies(Supplier<PageableResponse<TmdbMovieListing>> fetcher) {
-        PageableResponse<TmdbMovieListing> tmdbMovies = fetcher.get();
+    private PageableResponse<MovieResponse> fetchAndMapMovies(Supplier<TmdbPageableResponse<TmdbMovieListing>> fetcher) {
+        TmdbPageableResponse<TmdbMovieListing> tmdbMovies = fetcher.get();
         List<MovieResponse> movieResponses = tmdbMovies.getResults().stream()
                 .map((this::toMovieListing))
                 .map(movieListing -> MovieResponse.builder()
@@ -59,7 +60,12 @@ public class MovieTmdbAdapter implements MovieRepository {
                         .build())
                 .toList();
 
-        return tmdbMovies.mapResults(movieResponses);
+        return PageableResponse.<MovieResponse>builder()
+                .page(tmdbMovies.getPage() - 1) // TMDB API uses 1-based indexing, convert to 0-based for consistency
+                .totalPages(tmdbMovies.getTotalPages())
+                .totalResults(tmdbMovies.getTotalResults())
+                .results(movieResponses)
+                .build();
     }
 
     private MovieResponse mapDetailsToMovieResponse(TmdbMovieDetails tmdbMovieDetails) {

@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class MoviePlaylistUpdateRequest {
-    private List<String> playlistsToAdd;
-    private List<String> playlistsToRemove;
+    private List<String> playlistsToAdd = List.of();
+    private List<String> playlistsToRemove = List.of();
 }

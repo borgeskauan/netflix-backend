@@ -22,7 +22,7 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public PageableResponse<MovieResponse> searchMovies(@RequestParam String query, Pageable pageable) {
+    public PageableResponse<MovieResponse> searchMovies(@RequestParam("query") String query, Pageable pageable) {
         return movieUseCase.searchMovies(query, pageable);
     }
 
