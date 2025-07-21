@@ -41,20 +41,12 @@ public class PlaylistService implements PlaylistUseCase {
     public void updateMovieInPlaylists(String userId, String movieId, MoviePlaylistUpdateRequest request) {
         for (String playlistId : request.getPlaylistsToAdd()) {
             var playlist = playlistRepository.addMovieToPlaylist(userId, playlistId, movieId);
-            updatePlaylistCover(playlist, playlist.getMovieIds().getLast());
+            updatePlaylistCover(playlist);
         }
 
         for (String playlistId : request.getPlaylistsToRemove()) {
             var playlist = playlistRepository.removeMovieFromPlaylist(userId, playlistId, movieId);
-
-            // If the movie was the last one in the playlist, we can remove the cover image
-            if (playlist.getMovieIds().isEmpty()) {
-                playlist.setCoverImageUrl(null);
-                playlistRepository.save(playlist);
-            } else if (playlist.getMovieIds().size() == 1) {
-                // If there's only one movie left, update the cover image to that movie
-                updatePlaylistCover(playlist, playlist.getMovieIds().getLast());
-            }
+            updatePlaylistCover(playlist);
         }
     }
 
@@ -95,7 +87,14 @@ public class PlaylistService implements PlaylistUseCase {
         }
     }
 
-    private void updatePlaylistCover(Playlist playlist, String movieId) {
+    private void updatePlaylistCover(Playlist playlist) {
+        if (playlist.getMovieIds().isEmpty()) {
+            playlist.setCoverImageUrl(null);
+            playlistRepository.save(playlist);
+            return;
+        }
+
+        var movieId = playlist.getMovieIds().getLast();
         var movieCoverImage = fetchMovieCoverImage(movieId);
         if (movieCoverImage != null && !movieCoverImage.isEmpty()) {
             playlist.setCoverImageUrl(movieCoverImage);
