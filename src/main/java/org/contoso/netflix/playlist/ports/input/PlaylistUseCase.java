@@ -11,8 +11,6 @@ public interface PlaylistUseCase {
 
     Playlist getPlaylistsById(String userId, String playlistId);
 
-    List<Playlist> getPlaylistsByMovie(String userId, String movieId);
-
     void updateMovieInPlaylists(String userId, String movieId, MoviePlaylistUpdateRequest request);
 
     Playlist createPlaylist(String userId, PlaylistRequest request);

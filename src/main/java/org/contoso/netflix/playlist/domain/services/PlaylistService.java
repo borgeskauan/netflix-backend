@@ -2,6 +2,7 @@ package org.contoso.netflix.playlist.domain.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.contoso.netflix.movies.port.input.MovieUseCase;
+import org.contoso.netflix.movies.port.output.MovieRepository;
 import org.contoso.netflix.playlist.adapter.input.PlaylistRequest;
 import org.contoso.netflix.playlist.domain.dto.MoviePlaylistUpdateRequest;
 import org.contoso.netflix.playlist.domain.entity.Playlist;
@@ -21,11 +22,11 @@ import java.util.stream.Collectors;
 public class PlaylistService implements PlaylistUseCase {
 
     private final PlaylistRepository playlistRepository;
-    private final MovieUseCase movieUseCase;
+    private final MovieRepository movieRepository;
 
-    public PlaylistService(PlaylistRepository playlistRepository, MovieUseCase movieUseCase) {
+    public PlaylistService(PlaylistRepository playlistRepository, MovieRepository movieRepository) {
         this.playlistRepository = playlistRepository;
-        this.movieUseCase = movieUseCase;
+        this.movieRepository = movieRepository;
     }
 
     @Override
@@ -37,11 +38,6 @@ public class PlaylistService implements PlaylistUseCase {
     public Playlist getPlaylistsById(String userId, String playlistId) {
         return playlistRepository.findPlaylistsByUserIdAndId(userId, playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundException("Playlist not found for user: " + userId + " and playlistId: " + playlistId));
-    }
-
-    @Override
-    public List<Playlist> getPlaylistsByMovie(String userId, String movieId) {
-        return playlistRepository.findPlaylistsByMovieId(userId, movieId);
     }
 
     @Override
@@ -135,7 +131,7 @@ public class PlaylistService implements PlaylistUseCase {
     }
 
     private String fetchMovieCoverImage(String movieId) {
-        var movie = movieUseCase.getMovieDetails(movieId);
+        var movie = movieRepository.findMovieDetails(movieId);
         return movie.getMovieListing().getPosterPath();
     }
 

@@ -36,13 +36,6 @@ public class PlaylistJpaAdapter implements PlaylistRepository {
     }
 
     @Override
-    public List<Playlist> findPlaylistsByMovieId(String userId, String movieId) {
-        return playlistJpaClient.findAllByUserIdAndMovieIdsContaining(userId, List.of(new PlaylistMovieDatabase(movieId))).stream()
-                .map(playlistMapper::toResponse)
-                .toList();
-    }
-
-    @Override
     public List<Playlist> findSystemPlaylistsByUserId(String userId) {
         return playlistJpaClient.findAllByUserIdAndSystemPlaylistIdNotNull(userId).stream()
                 .map(playlistMapper::toResponse)

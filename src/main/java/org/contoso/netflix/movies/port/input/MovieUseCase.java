@@ -7,11 +7,11 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface MovieUseCase {
-    PageableResponse<MovieResponse> getPopularMovies(Pageable pageable);
+    PageableResponse<MovieResponse> getPopularMovies(String userId, Pageable pageable);
 
-    PageableResponse<MovieResponse> searchMovies(String query, Pageable pageable);
+    PageableResponse<MovieResponse> searchMovies(String query, String userId, Pageable pageable);
 
-    MovieResponse getMovieDetails(String movieId);
+    MovieResponse getMovieDetails(String userId, String movieId);
 
-    PageableResponse<MovieResponse> getSimilarMovies(String movieId, Pageable pageable);
+    PageableResponse<MovieResponse> getSimilarMovies(String userId, String movieId, Pageable pageable);
 }

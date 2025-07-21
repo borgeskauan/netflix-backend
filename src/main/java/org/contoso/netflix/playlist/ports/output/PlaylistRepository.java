@@ -10,8 +10,6 @@ public interface PlaylistRepository {
 
     Optional<Playlist> findPlaylistsByUserIdAndId(String userId, String playlistId);
 
-    List<Playlist> findPlaylistsByMovieId(String userId, String movieId);
-
     List<Playlist> findSystemPlaylistsByUserId(String userId);
 
     Playlist removeMovieFromPlaylist(String userId, String playlistId, String movieId);
