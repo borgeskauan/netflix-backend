@@ -1,7 +1,7 @@
 package org.contoso.netflix.auth.domain.services;
 
 import org.contoso.netflix.auth.domain.exception.InvalidRegistrationRequestException;
-import org.contoso.netflix.auth.port.input.UserRepositoryPort;
+import org.contoso.netflix.auth.port.output.UserRepositoryPort;
 import org.contoso.netflix.auth.domain.PasswordUtil;
 import org.contoso.netflix.auth.domain.dto.LoginRequest;
 import org.contoso.netflix.auth.domain.dto.RegisterRequest;

@@ -1,4 +1,4 @@
-package org.contoso.netflix.auth.port.input;
+package org.contoso.netflix.auth.port.output;
 
 import org.contoso.netflix.auth.domain.entity.NetflixUser;
 

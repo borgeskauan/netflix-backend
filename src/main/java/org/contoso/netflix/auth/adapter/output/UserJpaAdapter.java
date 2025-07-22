@@ -1,7 +1,7 @@
 package org.contoso.netflix.auth.adapter.output;
 
 import org.contoso.netflix.auth.domain.entity.NetflixUser;
-import org.contoso.netflix.auth.port.input.UserRepositoryPort;
+import org.contoso.netflix.auth.port.output.UserRepositoryPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
