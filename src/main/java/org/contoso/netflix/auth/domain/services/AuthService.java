@@ -5,11 +5,11 @@ import org.contoso.netflix.auth.port.input.UserRepositoryPort;
 import org.contoso.netflix.auth.domain.PasswordUtil;
 import org.contoso.netflix.auth.domain.dto.LoginRequest;
 import org.contoso.netflix.auth.domain.dto.RegisterRequest;
-import org.contoso.netflix.auth.domain.dto.UserResponse;
+import org.contoso.netflix.auth.domain.dto.PublicUserResponse;
 import org.contoso.netflix.auth.domain.entity.NetflixUser;
 import org.contoso.netflix.auth.domain.exception.NetflixAuthenticationException;
 import org.contoso.netflix.auth.port.input.AuthUseCase;
-import org.contoso.netflix.playlist.ports.input.PlaylistUseCase;
+import org.contoso.netflix.playlist.port.input.PlaylistUseCase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +26,7 @@ public class AuthService implements AuthUseCase {
 
     @Override
     @Transactional
-    public UserResponse register(RegisterRequest registerRequest) {
+    public PublicUserResponse register(RegisterRequest registerRequest) {
         validateRegisterRequest(registerRequest);
 
         String passwordHash = PasswordUtil.hashPassword(registerRequest.getPassword());
@@ -43,7 +43,7 @@ public class AuthService implements AuthUseCase {
     }
 
     @Override
-    public UserResponse login(LoginRequest loginRequest) {
+    public PublicUserResponse login(LoginRequest loginRequest) {
         NetflixUser user = userRepositoryPort.findByEmail(loginRequest.getEmail())
                 .orElseThrow(NetflixAuthenticationException::new);
 
@@ -56,7 +56,7 @@ public class AuthService implements AuthUseCase {
 
     @Override
     @Transactional
-    public UserResponse createGuestUser() {
+    public PublicUserResponse createGuestUser() {
         NetflixUser netflixUser = NetflixUser.builder()
                 .name("Guest User")
                 .isGuest(true)
@@ -79,7 +79,7 @@ public class AuthService implements AuthUseCase {
         }
     }
 
-    private UserResponse saveNetflixUser(NetflixUser netflixUser) {
+    private PublicUserResponse saveNetflixUser(NetflixUser netflixUser) {
         var savedUser = userRepositoryPort.save(netflixUser);
 
         boolean isNewUser = netflixUser.getId() == null || netflixUser.getId().toString().isEmpty();
@@ -94,8 +94,8 @@ public class AuthService implements AuthUseCase {
         }
     }
 
-    private static UserResponse mapToUserResponse(NetflixUser user) {
-        return UserResponse.builder()
+    private static PublicUserResponse mapToUserResponse(NetflixUser user) {
+        return PublicUserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())

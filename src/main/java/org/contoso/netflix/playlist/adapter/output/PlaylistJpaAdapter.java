@@ -2,7 +2,7 @@ package org.contoso.netflix.playlist.adapter.output;
 
 import org.contoso.netflix.playlist.domain.entity.Playlist;
 import org.contoso.netflix.playlist.domain.exception.InvalidPlaylistRequestException;
-import org.contoso.netflix.playlist.ports.output.PlaylistRepository;
+import org.contoso.netflix.playlist.port.output.PlaylistRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

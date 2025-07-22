@@ -7,7 +7,7 @@ import org.contoso.netflix.movies.port.input.MovieUseCase;
 import org.contoso.netflix.movies.port.output.MovieRepository;
 import org.contoso.netflix.playlist.domain.entity.Playlist;
 import org.contoso.netflix.playlist.domain.entity.SystemPlaylist;
-import org.contoso.netflix.playlist.ports.output.PlaylistRepository;
+import org.contoso.netflix.playlist.port.output.PlaylistRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

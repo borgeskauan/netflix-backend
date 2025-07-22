@@ -1,4 +1,4 @@
-package org.contoso.netflix.playlist.ports.input;
+package org.contoso.netflix.playlist.port.input;
 
 import org.contoso.netflix.playlist.adapter.input.PlaylistRequest;
 import org.contoso.netflix.playlist.domain.dto.MoviePlaylistUpdateRequest;

@@ -1,4 +1,4 @@
-package org.contoso.netflix.playlist.ports.output;
+package org.contoso.netflix.playlist.port.output;
 
 import org.contoso.netflix.playlist.domain.entity.Playlist;
 

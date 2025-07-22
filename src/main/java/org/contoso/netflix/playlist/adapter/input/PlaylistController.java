@@ -2,7 +2,7 @@ package org.contoso.netflix.playlist.adapter.input;
 
 import org.contoso.netflix.playlist.domain.dto.MoviePlaylistUpdateRequest;
 import org.contoso.netflix.playlist.domain.entity.Playlist;
-import org.contoso.netflix.playlist.ports.input.PlaylistUseCase;
+import org.contoso.netflix.playlist.port.input.PlaylistUseCase;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

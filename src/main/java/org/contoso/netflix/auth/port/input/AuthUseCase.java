@@ -2,12 +2,12 @@ package org.contoso.netflix.auth.port.input;
 
 import org.contoso.netflix.auth.domain.dto.LoginRequest;
 import org.contoso.netflix.auth.domain.dto.RegisterRequest;
-import org.contoso.netflix.auth.domain.dto.UserResponse;
+import org.contoso.netflix.auth.domain.dto.PublicUserResponse;
 
 public interface AuthUseCase {
-    UserResponse register(RegisterRequest registerRequest);
+    PublicUserResponse register(RegisterRequest registerRequest);
 
-    UserResponse login(LoginRequest loginRequest);
+    PublicUserResponse login(LoginRequest loginRequest);
 
-    UserResponse createGuestUser();
+    PublicUserResponse createGuestUser();
 }

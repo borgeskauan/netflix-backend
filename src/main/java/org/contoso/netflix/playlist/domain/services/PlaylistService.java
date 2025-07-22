@@ -1,7 +1,6 @@
 package org.contoso.netflix.playlist.domain.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.contoso.netflix.movies.port.input.MovieUseCase;
 import org.contoso.netflix.movies.port.output.MovieRepository;
 import org.contoso.netflix.playlist.adapter.input.PlaylistRequest;
 import org.contoso.netflix.playlist.domain.dto.MoviePlaylistUpdateRequest;
@@ -9,8 +8,8 @@ import org.contoso.netflix.playlist.domain.entity.Playlist;
 import org.contoso.netflix.playlist.domain.entity.SystemPlaylist;
 import org.contoso.netflix.playlist.domain.exception.InvalidPlaylistRequestException;
 import org.contoso.netflix.playlist.domain.exception.PlaylistNotFoundException;
-import org.contoso.netflix.playlist.ports.input.PlaylistUseCase;
-import org.contoso.netflix.playlist.ports.output.PlaylistRepository;
+import org.contoso.netflix.playlist.port.input.PlaylistUseCase;
+import org.contoso.netflix.playlist.port.output.PlaylistRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
