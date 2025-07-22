@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ReviewJpaClient extends JpaRepository<ReviewDatabase, UUID> {
-    List<ReviewDatabase> findReviewsByAuthor_IdAndMovieId(String authorId, String movieId);
+    List<ReviewDatabase> findReviewsByMovieId(String movieId);
 
     Optional<ReviewDatabase> findByAuthor_IdAndMovieId(String userId, String movieId);
 }

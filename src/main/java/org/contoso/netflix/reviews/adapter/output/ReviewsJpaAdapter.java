@@ -53,7 +53,7 @@ public class ReviewsJpaAdapter implements ReviewsRepository {
 
     @Override
     public List<Review> listMovieReviews(String userId, String movieId) {
-        var reviews = reviewJpaClient.findReviewsByAuthor_IdAndMovieId(userId, movieId);
+        var reviews = reviewJpaClient.findReviewsByMovieId(movieId);
         return reviews.stream()
                 .map(reviewMapper::toDomain)
                 .toList();
