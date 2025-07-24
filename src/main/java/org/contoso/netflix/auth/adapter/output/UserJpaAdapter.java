@@ -34,12 +34,30 @@ public class UserJpaAdapter implements UserRepositoryPort {
                 .map(this::mapToNetflixUser);
     }
 
+    @Override
+    public Optional<NetflixUser> findById(String id) {
+        return userJpaClient.findById(id)
+                .map(this::mapToNetflixUser);
+    }
+
+    @Override
+    public NetflixUser update(NetflixUser netflixUser) {
+        NetflixUserDatabase userEntity = mapToUserEntity(netflixUser);
+        if (userEntity.getId() == null || userEntity.getId().isEmpty()) {
+            throw new IllegalArgumentException("User ID cannot be null or empty for update");
+        }
+
+        NetflixUserDatabase updatedEntity = userJpaClient.save(userEntity);
+        return mapToNetflixUser(updatedEntity);
+    }
+
     private NetflixUser mapToNetflixUser(NetflixUserDatabase userEntity) {
         return NetflixUser.builder()
                 .id(UUID.fromString(userEntity.getId()))
                 .name(userEntity.getName())
                 .email(userEntity.getEmail())
                 .passwordHash(userEntity.getPasswordHash())
+                .planId(userEntity.getPlanId())
                 .isGuest(userEntity.getIsGuest())
                 .build();
     }
@@ -52,6 +70,7 @@ public class UserJpaAdapter implements UserRepositoryPort {
                 .name(netflixUser.getName())
                 .email(netflixUser.getEmail())
                 .passwordHash(netflixUser.getPasswordHash())
+                .planId(netflixUser.getPlanId())
                 .isGuest(netflixUser.getIsGuest())
                 .build();
     }

@@ -1,0 +1,53 @@
+#file: noinspection SpringBootApplicationYaml
+plans:
+  definition:
+    - id: FREE
+      name: Free
+      price: 0
+      features:
+        playlistCreation:
+          limit: 2
+        reviews:
+          canView: true
+          canWrite: false
+          canReply: false
+        search:
+          type: BASIC
+          hasFilters: false
+          hasSorting: false
+        canSeeSimilarMovies: false
+        canWatchTrailers: false
+
+    - id: PRO
+      name: Pro
+      price: 10
+      features:
+        playlistCreation:
+          limit: 10
+        reviews:
+          canView: true
+          canWrite: true
+          canReply: false
+        search:
+          type: BASIC
+          hasFilters: false
+          hasSorting: false
+        canSeeSimilarMovies: true
+        canWatchTrailers: true
+
+    - id: ELITE
+      name: Elite
+      price: 15
+      features:
+        playlistCreation:
+          limit: 2147483647  # Integer.MAX_VALUE as equivalent to Infinity
+        reviews:
+          canView: true
+          canWrite: true
+          canReply: true
+        search:
+          type: ADVANCED
+          hasFilters: true
+          hasSorting: true
+        canSeeSimilarMovies: true
+        canWatchTrailers: true

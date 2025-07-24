@@ -8,4 +8,8 @@ public interface UserRepositoryPort {
     NetflixUser save(NetflixUser netflixUser); // TODO: It might be better if we had a separate save and update method, for readability.
 
     Optional<NetflixUser> findByEmail(String email);
+
+    Optional<NetflixUser> findById(String id);
+
+    NetflixUser update(NetflixUser netflixUser);
 }

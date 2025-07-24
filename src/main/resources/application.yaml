@@ -8,6 +8,9 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  config:
+    import: classpath:plans-config.yml
+
 
 external:
   tmdb-api:

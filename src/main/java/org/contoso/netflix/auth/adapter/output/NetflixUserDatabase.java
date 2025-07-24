@@ -18,5 +18,6 @@ public class NetflixUserDatabase {
     private String email;
     private String passwordHash;
 
+    private String planId;
     private Boolean isGuest;
 }
