@@ -33,7 +33,7 @@ public class MovieService implements MovieUseCase {
     }
 
     @Override
-    public PageableResponse<MovieResponse> searchMovies(String query, String userId, Pageable pageable) {
+    public PageableResponse<MovieResponse> searchMovies(String userId, String query, Pageable pageable) {
         var movies = movieRepository.searchMovies(query, pageable);
         return enrichMoviesWithUserMetadata(userId, movies);
     }

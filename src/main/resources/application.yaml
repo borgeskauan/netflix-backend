@@ -4,6 +4,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
 external:
   tmdb-api:

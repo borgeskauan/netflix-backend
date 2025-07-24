@@ -9,7 +9,7 @@ import java.util.List;
 public interface MovieUseCase {
     PageableResponse<MovieResponse> getPopularMovies(String userId, Pageable pageable);
 
-    PageableResponse<MovieResponse> searchMovies(String query, String userId, Pageable pageable);
+    PageableResponse<MovieResponse> searchMovies(String userId, String query, Pageable pageable);
 
     MovieResponse getMovieDetails(String userId, String movieId);
 
