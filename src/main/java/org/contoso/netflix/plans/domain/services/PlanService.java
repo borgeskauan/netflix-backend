@@ -41,9 +41,10 @@ public class PlanService implements PlanUseCase {
         var user = userRepositoryPort.findById(userId)
                 .orElseThrow(() -> new NetflixUserNotFoundException("User not found"));
 
-        if (user.getIsGuest()) {
-            throw new InvalidChangePlanRequestException("Guest users cannot change plans");
-        }
+        // TODO: Reactivate after error/exception handling is implemented.
+//        if (user.getIsGuest()) {
+//            throw new InvalidChangePlanRequestException("Guest users cannot change plans");
+//        }
 
         var newPlan = findPlanById(userId, changePlanRequest.getNewPlanId())
                 .orElseThrow(() -> new InvalidChangePlanRequestException("Invalid plan ID"));
