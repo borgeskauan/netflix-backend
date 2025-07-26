@@ -1,9 +1,8 @@
 package org.contoso.netflix.movies.adapter.output;
 
-import org.contoso.netflix.movies.adapter.output.dto.TmdbPageableResponse;
-import org.contoso.netflix.movies.domain.dto.PageableResponse;
 import org.contoso.netflix.movies.adapter.output.dto.TmdbMovieDetails;
 import org.contoso.netflix.movies.adapter.output.dto.TmdbMovieListing;
+import org.contoso.netflix.movies.adapter.output.dto.TmdbPageableResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

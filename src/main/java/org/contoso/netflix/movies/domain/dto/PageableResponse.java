@@ -1,6 +1,8 @@
 package org.contoso.netflix.movies.domain.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.With;
 
 import java.util.List;
 import java.util.function.Function;

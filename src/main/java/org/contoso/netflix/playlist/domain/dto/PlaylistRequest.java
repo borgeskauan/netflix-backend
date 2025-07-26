@@ -1,4 +1,4 @@
-package org.contoso.netflix.playlist.adapter.input;
+package org.contoso.netflix.playlist.domain.dto;
 
 import lombok.Data;
 

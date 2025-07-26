@@ -1,7 +1,7 @@
 package org.contoso.netflix.reviews.adapter.input;
 
-import org.contoso.netflix.reviews.domain.entity.ReviewDraft;
 import org.contoso.netflix.reviews.domain.entity.Review;
+import org.contoso.netflix.reviews.domain.entity.ReviewDraft;
 import org.contoso.netflix.reviews.port.input.ReviewsUseCase;
 import org.springframework.web.bind.annotation.*;
 

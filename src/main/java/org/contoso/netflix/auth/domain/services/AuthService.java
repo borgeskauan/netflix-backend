@@ -1,14 +1,14 @@
 package org.contoso.netflix.auth.domain.services;
 
-import org.contoso.netflix.auth.domain.exception.InvalidRegistrationRequestException;
-import org.contoso.netflix.auth.port.output.UserRepositoryPort;
 import org.contoso.netflix.auth.domain.PasswordUtil;
 import org.contoso.netflix.auth.domain.dto.LoginRequest;
-import org.contoso.netflix.auth.domain.dto.RegisterRequest;
 import org.contoso.netflix.auth.domain.dto.PublicUserResponse;
+import org.contoso.netflix.auth.domain.dto.RegisterRequest;
 import org.contoso.netflix.auth.domain.entity.NetflixUser;
+import org.contoso.netflix.auth.domain.exception.InvalidRegistrationRequestException;
 import org.contoso.netflix.auth.domain.exception.NetflixAuthenticationException;
 import org.contoso.netflix.auth.port.input.AuthUseCase;
+import org.contoso.netflix.auth.port.output.UserRepositoryPort;
 import org.contoso.netflix.playlist.port.input.PlaylistUseCase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
 package org.contoso.netflix.movies.adapter.input;
 
-import org.contoso.netflix.movies.domain.dto.PageableResponse;
 import org.contoso.netflix.movies.domain.dto.MovieResponse;
+import org.contoso.netflix.movies.domain.dto.PageableResponse;
 import org.contoso.netflix.movies.port.input.MovieUseCase;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;

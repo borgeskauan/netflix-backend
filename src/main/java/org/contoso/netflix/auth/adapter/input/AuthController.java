@@ -1,9 +1,9 @@
 package org.contoso.netflix.auth.adapter.input;
 
 import jakarta.validation.Valid;
-import org.contoso.netflix.auth.domain.dto.RegisterRequest;
 import org.contoso.netflix.auth.domain.dto.LoginRequest;
 import org.contoso.netflix.auth.domain.dto.PublicUserResponse;
+import org.contoso.netflix.auth.domain.dto.RegisterRequest;
 import org.contoso.netflix.auth.port.input.AuthUseCase;
 import org.springframework.web.bind.annotation.*;
 

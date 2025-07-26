@@ -1,7 +1,7 @@
 package org.contoso.netflix.playlist.port.input;
 
-import org.contoso.netflix.playlist.adapter.input.PlaylistRequest;
 import org.contoso.netflix.playlist.domain.dto.MoviePlaylistUpdateRequest;
+import org.contoso.netflix.playlist.domain.dto.PlaylistRequest;
 import org.contoso.netflix.playlist.domain.entity.Playlist;
 
 import java.util.List;
