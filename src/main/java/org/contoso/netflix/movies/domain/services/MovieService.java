@@ -5,6 +5,8 @@ import org.contoso.netflix.movies.domain.dto.PageableResponse;
 import org.contoso.netflix.movies.domain.entity.UserMovieMetadata;
 import org.contoso.netflix.movies.port.input.MovieUseCase;
 import org.contoso.netflix.movies.port.output.MovieRepository;
+import org.contoso.netflix.plans.domain.exception.PlanFeatureNotAvailableException;
+import org.contoso.netflix.plans.domain.services.PlanService;
 import org.contoso.netflix.playlist.domain.entity.Playlist;
 import org.contoso.netflix.playlist.domain.entity.SystemPlaylist;
 import org.contoso.netflix.playlist.port.output.PlaylistRepository;
@@ -20,10 +22,12 @@ public class MovieService implements MovieUseCase {
 
     private final MovieRepository movieRepository;
     private final PlaylistRepository playlistRepository;
+    private final PlanService planService;
 
-    public MovieService(MovieRepository movieRepository, PlaylistRepository playlistRepository) {
+    public MovieService(MovieRepository movieRepository, PlaylistRepository playlistRepository, PlanService planService) {
         this.movieRepository = movieRepository;
         this.playlistRepository = playlistRepository;
+        this.planService = planService;
     }
 
     @Override
@@ -46,6 +50,10 @@ public class MovieService implements MovieUseCase {
 
     @Override
     public PageableResponse<MovieResponse> getSimilarMovies(String userId, String movieId, Pageable pageable) {
+        if (!planService.getUserPlanDetails(userId).getFeatures().getCanSeeSimilarMovies()) {
+            throw new PlanFeatureNotAvailableException("Your plan does not allow viewing similar movies");
+        }
+
         var movies = movieRepository.findSimilarMovies(movieId, pageable);
         return enrichMoviesWithUserMetadata(userId, movies);
     }

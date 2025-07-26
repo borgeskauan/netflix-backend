@@ -2,6 +2,8 @@ package org.contoso.netflix.playlist.domain.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.contoso.netflix.movies.port.output.MovieRepository;
+import org.contoso.netflix.plans.domain.exception.PlanFeatureNotAvailableException;
+import org.contoso.netflix.plans.domain.services.PlanService;
 import org.contoso.netflix.playlist.adapter.input.PlaylistRequest;
 import org.contoso.netflix.playlist.domain.dto.MoviePlaylistUpdateRequest;
 import org.contoso.netflix.playlist.domain.entity.Playlist;
@@ -22,10 +24,12 @@ public class PlaylistService implements PlaylistUseCase {
 
     private final PlaylistRepository playlistRepository;
     private final MovieRepository movieRepository;
+    private final PlanService planService;
 
-    public PlaylistService(PlaylistRepository playlistRepository, MovieRepository movieRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, MovieRepository movieRepository, PlanService planService) {
         this.playlistRepository = playlistRepository;
         this.movieRepository = movieRepository;
+        this.planService = planService;
     }
 
     @Override
@@ -64,6 +68,8 @@ public class PlaylistService implements PlaylistUseCase {
 
     @Override
     public Playlist createPlaylist(String userId, PlaylistRequest request) {
+        validatePermissions(userId);
+
         // Validate request
         if (request.getName() == null || request.getName().isEmpty()) {
             throw new InvalidPlaylistRequestException("Playlist name cannot be empty");
@@ -88,6 +94,18 @@ public class PlaylistService implements PlaylistUseCase {
                 .build();
 
         return playlistRepository.save(newPlaylist);
+    }
+
+    private void validatePermissions(String userId) {
+        var currentCustomPlaylists = playlistRepository.findPlaylistsByUserId(userId).stream()
+                .filter(playlist -> playlist.getSystemPlaylistId() == null)
+                .toList();
+
+        var currentLimit = planService.getUserPlanDetails(userId).getFeatures().getPlaylistCreation().getLimit();
+
+        if (currentCustomPlaylists.size() >= currentLimit) {
+            throw new PlanFeatureNotAvailableException("Your plan does not allow creating more than " + currentLimit + " playlists");
+        }
     }
 
     @Override
