@@ -72,7 +72,7 @@ public class PlaylistService implements PlaylistUseCase {
 
         // Validate request
         if (request.getName() == null || request.getName().isEmpty()) {
-            throw new InvalidPlaylistRequestException("Playlist name cannot be empty");
+            throw new InvalidPlaylistRequestException("The name of the playlist cannot be empty");
         }
 
         String coverImageUrl = "";
