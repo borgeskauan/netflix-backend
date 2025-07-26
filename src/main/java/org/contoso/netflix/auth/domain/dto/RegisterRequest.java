@@ -1,5 +1,6 @@
 package org.contoso.netflix.auth.domain.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class RegisterRequest {
 
     private String name;
 
+    @Email
     @NotEmpty
     private String email;
 

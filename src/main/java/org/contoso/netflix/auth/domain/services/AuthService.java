@@ -70,10 +70,6 @@ public class AuthService implements AuthUseCase {
             throw new InvalidRegistrationRequestException("User already exists with this email");
         }
 
-        if (registerRequest.getEmail() == null || registerRequest.getEmail().isEmpty()) {
-            throw new InvalidRegistrationRequestException("Email cannot be empty");
-        }
-
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
             throw new InvalidRegistrationRequestException("Passwords do not match");
         }

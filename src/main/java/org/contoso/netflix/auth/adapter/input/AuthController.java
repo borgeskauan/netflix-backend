@@ -1,5 +1,6 @@
 package org.contoso.netflix.auth.adapter.input;
 
+import jakarta.validation.Valid;
 import org.contoso.netflix.auth.domain.dto.RegisterRequest;
 import org.contoso.netflix.auth.domain.dto.LoginRequest;
 import org.contoso.netflix.auth.domain.dto.PublicUserResponse;
@@ -17,12 +18,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public PublicUserResponse login(@RequestBody LoginRequest request) {
+    public PublicUserResponse login(@RequestBody @Valid LoginRequest request) {
         return authUseCase.login(request);
     }
 
     @PostMapping("/register")
-    public PublicUserResponse register(@RequestBody RegisterRequest request) {
+    public PublicUserResponse register(@RequestBody @Valid RegisterRequest request) {
         return authUseCase.register(request);
     }
 
