@@ -67,7 +67,7 @@ public class AuthService implements AuthUseCase {
 
     private void validateRegisterRequest(RegisterRequest registerRequest) {
         if (userRepositoryPort.findByEmail(registerRequest.getEmail()).isPresent()) {
-            throw new InvalidRegistrationRequestException("There is already a user with this email");
+            throw new InvalidRegistrationRequestException("A user with this email already exists");
         }
 
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {

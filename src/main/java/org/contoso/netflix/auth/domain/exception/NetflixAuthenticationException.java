@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 @HttpStatusMapping(HttpStatus.UNAUTHORIZED)
 public class NetflixAuthenticationException extends BusinessException {
     public NetflixAuthenticationException() {
-        super("Invalid credentials");
+        super("Login or password are incorrect");
     }
 }
