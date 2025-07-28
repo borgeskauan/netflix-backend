@@ -2,6 +2,8 @@
 
 This is the backend service for a Netflix-like web application, built using **Spring Boot** and **Java 21**. It powers features such as movie search, playlists, reviews, and user subscription plans. The backend is intentionally kept simple, using **in-memory H2 database** and no external infrastructure dependencies, making it easy to run locally.
 
+Also check out our [front end](https://github.com/borgeskauan/netflix-frontend) that integrates with this service.
+
 ---
 
 ## Tech Stack
@@ -131,4 +133,3 @@ All of the endpoints are served under `/netflix`. The OpenAPI documentation can 
 - The backend uses simple UUID-based authentication rather than JWT for simplicity
 - All endpoints require a user ID parameter to enforce user context
 - Subscription plan features are enforced at the API level
-- Also check out our [front end](https://github.com/borgeskauan/netflix-frontend) that integrates with this service
