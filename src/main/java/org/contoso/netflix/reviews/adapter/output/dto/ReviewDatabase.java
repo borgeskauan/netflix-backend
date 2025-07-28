@@ -1,9 +1,6 @@
 package org.contoso.netflix.reviews.adapter.output.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.contoso.netflix.auth.adapter.output.NetflixUserDatabase;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,7 +22,10 @@ public class ReviewDatabase {
     private NetflixUserDatabase author;
 
     private Double rating;
+
+    @Column(length = 500)
     private String content;
+
     private int likes;
 
     @CreationTimestamp

@@ -1,9 +1,6 @@
 package org.contoso.netflix.reviews.adapter.output.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +22,8 @@ public class ReviewsDraftDatabase {
     private String userId;
     private String movieId;
 
+    @Column(length = 500)
     private String content;
+
     private Double rating;
 }
