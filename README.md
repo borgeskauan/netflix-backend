@@ -131,4 +131,4 @@ All of the endpoints are served under `/netflix`. The OpenAPI documentation can 
 - The backend uses simple UUID-based authentication rather than JWT for simplicity
 - All endpoints require a user ID parameter to enforce user context
 - Subscription plan features are enforced at the API level
-- Also check out our (front end)[https://github.com/borgeskauan/netflix-frontend] that integrates with this service
+- Also check out our [front end](https://github.com/borgeskauan/netflix-frontend) that integrates with this service
