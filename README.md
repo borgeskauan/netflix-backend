@@ -128,6 +128,9 @@ The backend is documented using OpenAPI, generated automatically by Spring Boot,
 
 All of the endpoints are served under `/netflix`. The OpenAPI documentation can be access at `/v3/api-docs` or `/swagger-ui/index.html`.
 
+## Video demo
+[![Video demo](https://img.youtube.com/vi/Eg7Yh2MguWI/0.jpg)](https://youtu.be/Eg7Yh2MguWI)
+
 ## Notes
 
 - The backend uses simple UUID-based authentication rather than JWT for simplicity
